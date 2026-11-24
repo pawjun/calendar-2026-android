@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "calendar-2026-android",
+    "name": "PhotoCalendar",
     "slug": "calendar-2026-android",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pawjun.calendar2026"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,10 +22,20 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.pawjun.calendar2026"
     },
+    "plugins": [
+      "expo-file-system",
+      "expo-image-picker"
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9f839a23-3f10-442d-9d8f-1cf659f68cae"
+      }
     }
   }
 }
