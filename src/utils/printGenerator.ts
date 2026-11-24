@@ -21,6 +21,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
     // Grid generation
     let gridHtml = '';
     const rows = Math.ceil(days.length / 7);
+    const isSixWeeks = rows > 5;
 
     for (let i = 0; i < rows; i++) {
         gridHtml += '<tr>';
@@ -67,6 +68,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
             .image-container {
                 width: 100%;
                 height: 148mm; /* Half page approx */
+                flex-shrink: 0;
                 background-color: #f3f4f6;
                 display: flex;
                 align-items: center;
@@ -129,6 +131,15 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 border-top: 1px solid #eee;
                 padding: 5px;
             }
+
+            table.six-weeks td.day {
+                height: 66px;
+                padding: 3px 5px;
+            }
+
+            table.six-weeks .day-number {
+                font-size: 20px;
+            }
             
             .day-number {
                 font-size: 24px;
@@ -164,7 +175,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                     <div class="year-subtitle">${year}</div>
                 </div>
 
-                <table>
+                <table class="${isSixWeeks ? 'six-weeks' : ''}">
                     <thead>
                         <tr>
                             ${DAYS.map(d => `<th>${d}</th>`).join('')}

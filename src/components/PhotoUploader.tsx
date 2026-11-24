@@ -36,7 +36,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ month, currentImag
     return (
         <View
             className="w-full bg-gray-100 overflow-hidden relative mb-4 shadow-sm rounded-md"
-            style={{ width: '100%', aspectRatio: 1.49 }}
+            style={{ width: '100%', aspectRatio: 1.49, flexShrink: 0 }}
         >
             {currentImage ? (
                 <View className="w-full h-full relative">

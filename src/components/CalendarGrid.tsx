@@ -10,6 +10,8 @@ interface CalendarGridProps {
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({ year, monthIndex }) => {
     const days = generateCalendarDays(year, monthIndex);
+    const rows = Math.ceil(days.length / 7);
+    const isSixWeeks = rows > 5;
 
     return (
         <View className="w-full p-4 bg-white">
@@ -43,17 +45,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ year, monthIndex }) 
                     return (
                         <View
                             key={index}
-                            className={`w-[14.28%] aspect-square p-1 border-t-2 border-transparent ${day ? 'border-gray-100' : ''}`}
+                            className={`w-[14.28%] ${isSixWeeks ? 'p-0.5' : 'p-1'} border-t-2 border-transparent ${day ? 'border-gray-100' : ''}`}
+                            style={{ aspectRatio: isSixWeeks ? 6 / 5 : 1 }}
                         >
                             {day && (
                                 <View className="flex-col h-full justify-between items-center">
-                                    <Text className={`text-lg font-medium ${textColor}`}>
+                                    <Text className={`${isSixWeeks ? 'text-base' : 'text-lg'} font-medium ${textColor}`}>
                                         {day}
                                     </Text>
                                     {holidayName && (
                                         <Text
                                             numberOfLines={1}
-                                            className="text-[10px] text-red-500 font-medium w-full text-center"
+                                            className={`${isSixWeeks ? 'text-[9px]' : 'text-[10px]'} text-red-500 font-medium w-full text-center`}
                                         >
                                             {holidayName}
                                         </Text>
