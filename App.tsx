@@ -46,6 +46,7 @@ export default function App() {
 
   const [currentIndex, setCurrentIndex] = useState(safeInitialIndex);
   const [images, setImages] = useState<Record<string, string>>({}); // Key: "YYYY-M"
+  const [isSimpleMode, setIsSimpleMode] = useState(false);
   const flatListRef = useRef<FlatList>(null);
 
   const screenWidth = Dimensions.get('window').width;
@@ -131,7 +132,7 @@ export default function App() {
   const handlePrint = async () => {
     try {
       const { year, monthIndex } = currentItem;
-      const html = await generateHtmlContent(year, monthIndex, images[`${year}-${monthIndex}`]);
+      const html = await generateHtmlContent(year, monthIndex, images[`${year}-${monthIndex}`], isSimpleMode);
       const { uri } = await Print.printToFileAsync({
         html,
         width: 595, // A4 width in points (72 dpi)
@@ -165,6 +166,8 @@ export default function App() {
       <AppLayout
         year={currentItem.year}
         currentMonth={currentItem.monthIndex}
+        isSimpleMode={isSimpleMode}
+        onToggleSimpleMode={() => setIsSimpleMode(prev => !prev)}
         onPrev={() => handlePageChange(currentIndex - 1)}
         onNext={() => handlePageChange(currentIndex + 1)}
         onPrint={handlePrint}
@@ -191,6 +194,7 @@ export default function App() {
                 year={item.year}
                 monthIndex={item.monthIndex}
                 image={images[`${item.year}-${item.monthIndex}`]}
+                isSimpleMode={isSimpleMode}
                 onImageUpload={(uri) => handleImageUpload(item.year, item.monthIndex, uri)}
                 onDelete={() => handleImageDelete(item.year, item.monthIndex)}
               />

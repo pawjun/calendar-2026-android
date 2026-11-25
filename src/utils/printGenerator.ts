@@ -1,8 +1,17 @@
-import { generateCalendarDays, DAYS, MONTHS } from './calendar';
+import {
+    generateCalendarDays,
+    getSpecialDayReading,
+    DAYS,
+    DAYS_JA,
+    DAYS_JA_READING,
+    MONTHS,
+    MONTHS_JA,
+    MONTHS_JA_READING
+} from './calendar';
 import { HOLIDAYS } from './holidays';
 import * as FileSystem from 'expo-file-system/legacy';
 
-const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: string) => {
+const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: string, isSimpleMode = false) => {
     // Note: imageUri here can be a full data URI (Base64) or a local file:// path.
     // We convert local files to Base64 for better PDF rendering in the WebView.
     let base64Image = imageUri;
@@ -36,6 +45,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
 
             const dateKey = `${year}-${monthIndex + 1}-${day}`;
             const holidayName = HOLIDAYS[dateKey];
+            const dayReading = isSimpleMode ? getSpecialDayReading(day) : undefined;
             const isSunday = j === 0;
             const isSaturday = j === 6;
 
@@ -47,6 +57,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 <td class="day">
                     <div class="day-content">
                         <div class="day-number ${colorClass}">${day}</div>
+                        ${dayReading ? `<div class="day-reading">${dayReading}</div>` : ''}
                         ${holidayName ? `<div class="holiday-name">${holidayName}</div>` : ''}
                     </div>
                 </td>
@@ -140,6 +151,38 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
             table.six-weeks .day-number {
                 font-size: 20px;
             }
+
+            .simple-mode .day-number {
+                font-size: 26px;
+                line-height: 1.1;
+            }
+
+            .simple-mode table.six-weeks .day-number {
+                font-size: 22px;
+                line-height: 1.1;
+            }
+
+            .day-reading {
+                font-size: 10px;
+                color: #64748b;
+                margin-top: 1px;
+                font-family: sans-serif;
+            }
+
+            .th-reading {
+                display: block;
+                font-size: 10px;
+                font-weight: normal;
+                color: #94a3b8;
+                margin-top: 1px;
+            }
+
+            .month-reading {
+                font-size: 18px;
+                color: #64748b;
+                font-weight: normal;
+                margin-left: 10px;
+            }
             
             .day-number {
                 font-size: 24px;
@@ -161,7 +204,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
         </style>
     </head>
     <body>
-        <div class="page">
+        <div class="page ${isSimpleMode ? 'simple-mode' : ''}">
             <div class="image-container">
                 ${base64Image
             ? `<img src="${base64Image}" />`
@@ -171,14 +214,20 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
             
             <div class="content">
                 <div class="header">
-                    <h1 class="month-title">${MONTHS[monthIndex]}</h1>
+                    <h1 class="month-title">${isSimpleMode
+            ? `${MONTHS_JA[monthIndex]}<span class="month-reading">${MONTHS_JA_READING[monthIndex]}</span>`
+            : MONTHS[monthIndex]
+        }</h1>
                     <div class="year-subtitle">${year}</div>
                 </div>
 
                 <table class="${isSixWeeks ? 'six-weeks' : ''}">
                     <thead>
                         <tr>
-                            ${DAYS.map(d => `<th>${d}</th>`).join('')}
+                            ${isSimpleMode
+            ? DAYS_JA.map((d, idx) => `<th>${d}<span class="th-reading">${DAYS_JA_READING[idx]}</span></th>`).join('')
+            : DAYS.map(d => `<th>${d}</th>`).join('')
+        }
                         </tr>
                     </thead>
                     <tbody>

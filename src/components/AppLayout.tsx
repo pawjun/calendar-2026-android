@@ -2,11 +2,13 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, ChevronRight, Printer, Trash2 } from 'lucide-react-native';
-import { MONTHS } from '../utils/calendar';
+import { MONTHS, MONTHS_JA } from '../utils/calendar';
 
 interface AppLayoutProps {
     currentMonth: number;
     year: number;
+    isSimpleMode?: boolean;
+    onToggleSimpleMode?: () => void;
     onPrev?: () => void;
     onNext?: () => void;
     onPrint?: () => void;
@@ -17,6 +19,8 @@ interface AppLayoutProps {
 export const AppLayout: React.FC<AppLayoutProps> = ({
     currentMonth,
     year,
+    isSimpleMode = false,
+    onToggleSimpleMode,
     onPrev,
     onNext,
     onPrint,
@@ -29,7 +33,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
             <View className="flex-1 bg-calendar-bg">
                 {/* Navigation Header */}
                 <View className="flex-row items-center justify-between px-4 py-2 bg-white shadow-sm z-10">
-                    <View className="flex-row items-center space-x-4 gap-4">
+                    <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={onPrev}
                             className="p-2 rounded-full hover:bg-gray-100 bg-gray-50"
@@ -37,8 +41,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
                             <ChevronLeft size={24} color="#333" />
                         </TouchableOpacity>
 
-                        <Text className="text-xl font-medium w-[150px] text-center font-serif">
-                            {year} - {MONTHS[currentMonth]}
+                        <Text className="text-lg font-medium w-[120px] text-center font-serif" numberOfLines={1}>
+                            {isSimpleMode
+                                ? `${year}年 ${MONTHS_JA[currentMonth]}`
+                                : `${year} - ${MONTHS[currentMonth]}`}
                         </Text>
 
                         <TouchableOpacity
@@ -49,7 +55,26 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
                         </TouchableOpacity>
                     </View>
 
-                    <View className="flex-row items-center gap-2">
+                    <View className="flex-row items-center gap-1.5">
+                        {onToggleSimpleMode && (
+                            <TouchableOpacity
+                                onPress={onToggleSimpleMode}
+                                className={`px-2.5 py-2 rounded-lg border ${
+                                    isSimpleMode
+                                        ? 'bg-amber-100 border-amber-400'
+                                        : 'bg-gray-100 border-gray-200'
+                                }`}
+                            >
+                                <Text
+                                    className={`text-xs font-bold ${
+                                        isSimpleMode ? 'text-amber-800' : 'text-gray-600'
+                                    }`}
+                                >
+                                    かんたん
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+
                         {onClearAll && (
                             <TouchableOpacity
                                 onPress={onClearAll}
