@@ -19,7 +19,7 @@ export const DAYS_JA = ['日', '月', '火', '水', '木', '金', '土'];
 
 export const DAYS_JA_READING = ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'];
 
-const SPECIAL_DAY_READINGS: Record<number, string> = {
+const DAY_READINGS: Record<number, string> = {
     1: 'ついたち',
     2: 'ふつか',
     3: 'みっか',
@@ -30,13 +30,44 @@ const SPECIAL_DAY_READINGS: Record<number, string> = {
     8: 'ようか',
     9: 'ここのか',
     10: 'とおか',
+    11: 'じゅういちにち',
+    12: 'じゅうににち',
+    13: 'じゅうさんにち',
     14: 'じゅうよっか',
+    15: 'じゅうごにち',
+    16: 'じゅうろくにち',
+    17: 'じゅうしちにち',
+    18: 'じゅうはちにち',
+    19: 'じゅうくにち',
     20: 'はつか',
+    21: 'にじゅういちにち',
+    22: 'にじゅうににち',
+    23: 'にじゅうさんにち',
     24: 'にじゅうよっか',
+    25: 'にじゅうごにち',
+    26: 'にじゅうろくにち',
+    27: 'にじゅうしちにち',
+    28: 'にじゅうはちにち',
+    29: 'にじゅうくにち',
+    30: 'さんじゅうにち',
+    31: 'さんじゅういちにち',
 };
 
-export function getSpecialDayReading(day: number): string | undefined {
-    return SPECIAL_DAY_READINGS[day];
+export function getDayReading(day: number): string | undefined {
+    return DAY_READINGS[day];
+}
+
+const ONES_YEAR_READINGS = ['', 'いち', 'に', 'さん', 'よ', 'ご', 'ろく', 'なな', 'はち', 'く'];
+const TENS_YEAR_READINGS = ['', 'じゅう', 'にじゅう', 'さんじゅう', 'よんじゅう', 'ごじゅう', 'ろくじゅう', 'ななじゅう', 'はちじゅう', 'きゅうじゅう'];
+
+export function getJapaneseYearReading(year: number): string {
+    if (year < 2000 || year > 2099) {
+        return `${year}ねん`;
+    }
+    const rem = year - 2000;
+    const tens = Math.floor(rem / 10);
+    const ones = rem % 10;
+    return `にせん${TENS_YEAR_READINGS[tens]}${ONES_YEAR_READINGS[ones]}ねん`;
 }
 
 export function getDaysInMonth(year: number, monthIndex: number): number {

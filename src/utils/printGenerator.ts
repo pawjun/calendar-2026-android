@@ -1,6 +1,7 @@
 import {
     generateCalendarDays,
-    getSpecialDayReading,
+    getDayReading,
+    getJapaneseYearReading,
     DAYS,
     DAYS_JA,
     DAYS_JA_READING,
@@ -45,7 +46,7 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
 
             const dateKey = `${year}-${monthIndex + 1}-${day}`;
             const holidayName = HOLIDAYS[dateKey];
-            const dayReading = isSimpleMode ? getSpecialDayReading(day) : undefined;
+            const dayReading = isSimpleMode ? getDayReading(day) : undefined;
             const isSunday = j === 0;
             const isSaturday = j === 6;
 
@@ -183,6 +184,14 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 font-weight: normal;
                 margin-left: 10px;
             }
+
+            .year-reading {
+                font-size: 13px;
+                color: #64748b;
+                letter-spacing: normal;
+                margin-left: 6px;
+                font-family: sans-serif;
+            }
             
             .day-number {
                 font-size: 24px;
@@ -218,7 +227,10 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
             ? `${MONTHS_JA[monthIndex]}<span class="month-reading">${MONTHS_JA_READING[monthIndex]}</span>`
             : MONTHS[monthIndex]
         }</h1>
-                    <div class="year-subtitle">${year}</div>
+                    <div class="year-subtitle">${isSimpleMode
+            ? `${year}年<span class="year-reading">${getJapaneseYearReading(year)}</span>`
+            : year
+        }</div>
                 </div>
 
                 <table class="${isSixWeeks ? 'six-weeks' : ''}">

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { PhotoUploader } from './PhotoUploader';
 import { CalendarGrid } from './CalendarGrid';
-import { MONTHS, MONTHS_JA, MONTHS_JA_READING } from '../utils/calendar';
+import { MONTHS, MONTHS_JA, MONTHS_JA_READING, getJapaneseYearReading } from '../utils/calendar';
 
 interface MonthPageProps {
     year: number;
@@ -53,9 +53,20 @@ export const MonthPage: React.FC<MonthPageProps> = ({
                                 {MONTHS[monthIndex]}
                             </Text>
                         )}
-                        <Text className="text-base text-calendar-muted font-medium tracking-widest font-serif">
-                            {year}
-                        </Text>
+                        {isSimpleMode ? (
+                            <View className="flex-row items-baseline gap-2">
+                                <Text className="text-base text-calendar-muted font-medium tracking-widest font-serif">
+                                    {year}年
+                                </Text>
+                                <Text className="text-xs text-calendar-muted font-medium">
+                                    {getJapaneseYearReading(year)}
+                                </Text>
+                            </View>
+                        ) : (
+                            <Text className="text-base text-calendar-muted font-medium tracking-widest font-serif">
+                                {year}
+                            </Text>
+                        )}
                     </View>
 
                     <CalendarGrid year={year} monthIndex={monthIndex} isSimpleMode={isSimpleMode} />

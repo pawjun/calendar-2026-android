@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { DAYS, DAYS_JA, DAYS_JA_READING, generateCalendarDays, getSpecialDayReading } from '../utils/calendar';
+import { DAYS, DAYS_JA, DAYS_JA_READING, generateCalendarDays, getDayReading } from '../utils/calendar';
 import { HOLIDAYS } from '../utils/holidays';
 
 interface CalendarGridProps {
@@ -37,7 +37,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ year, monthIndex, is
                 {days.map((day, index) => {
                     const dateKey = day ? `${year}-${monthIndex + 1}-${day}` : '';
                     const holidayName = dateKey ? HOLIDAYS[dateKey] : undefined;
-                    const dayReading = isSimpleMode && day ? getSpecialDayReading(day) : undefined;
+                    const dayReading = isSimpleMode && day ? getDayReading(day) : undefined;
                     const isSunday = index % 7 === 0;
                     const isSaturday = index % 7 === 6;
 
