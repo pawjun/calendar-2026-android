@@ -15,7 +15,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ year, monthIndex, is
     const isSixWeeks = rows > 5;
 
     return (
-        <View className="w-full p-4 bg-white">
+        <View className={`w-full ${isSixWeeks ? 'px-4 py-2' : 'p-4'} bg-white`}>
             {/* Days Header */}
             <View className="flex-row mb-2">
                 {(isSimpleMode ? DAYS_JA : DAYS).map((day, idx) => (

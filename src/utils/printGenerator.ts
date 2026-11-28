@@ -100,20 +100,34 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
 
             .content {
                 flex: 1;
+                min-height: 0;
                 padding: 20px 40px;
                 display: flex;
                 flex-direction: column;
+            }
+
+            .six-weeks-page .content {
+                padding: 12px 40px;
             }
 
             .header {
                 text-align: center;
                 margin-bottom: 20px;
             }
+
+            .six-weeks-page .header {
+                margin-bottom: 10px;
+            }
+
             .month-title {
                 font-size: 48px;
                 font-weight: bold;
                 margin: 0;
                 color: #2d3436;
+            }
+
+            .six-weeks-page .month-title {
+                font-size: 42px;
             }
             .year-subtitle {
                 font-size: 18px;
@@ -137,20 +151,31 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 font-family: sans-serif;
             }
 
+            .six-weeks-page th {
+                padding-bottom: 6px;
+            }
+
             td.day {
                 height: 80px;
                 vertical-align: top;
                 border-top: 1px solid #eee;
                 padding: 5px;
+                box-sizing: border-box;
+            }
+
+            .day-number {
+                font-size: 24px;
+                font-weight: 500;
             }
 
             table.six-weeks td.day {
-                height: 66px;
-                padding: 3px 5px;
+                height: 54px;
+                padding: 2px 4px;
             }
 
             table.six-weeks .day-number {
                 font-size: 20px;
+                line-height: 1.05;
             }
 
             .simple-mode .day-number {
@@ -159,8 +184,8 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
             }
 
             .simple-mode table.six-weeks .day-number {
-                font-size: 22px;
-                line-height: 1.1;
+                font-size: 21px;
+                line-height: 1.05;
             }
 
             .day-reading {
@@ -168,6 +193,11 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 color: #64748b;
                 margin-top: 1px;
                 font-family: sans-serif;
+                line-height: 1.1;
+            }
+
+            table.six-weeks .day-reading {
+                font-size: 9px;
             }
 
             .th-reading {
@@ -193,11 +223,6 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 font-family: sans-serif;
             }
             
-            .day-number {
-                font-size: 24px;
-                font-weight: 500;
-            }
-            
             .holiday-name {
                 font-size: 10px;
                 color: #ef4444;
@@ -207,13 +232,19 @@ const generateHtmlContent = async (year: number, monthIndex: number, imageUri?: 
                 text-overflow: ellipsis;
             }
 
+            table.six-weeks .holiday-name {
+                font-size: 9px;
+                line-height: 1.1;
+                margin-top: 1px;
+            }
+
             .text-normal { color: #2d3436; }
             .text-red { color: #ef4444; }
             .text-blue { color: #3b82f6; }
         </style>
     </head>
     <body>
-        <div class="page ${isSimpleMode ? 'simple-mode' : ''}">
+        <div class="page ${isSimpleMode ? 'simple-mode' : ''} ${isSixWeeks ? 'six-weeks-page' : ''}">
             <div class="image-container">
                 ${base64Image
             ? `<img src="${base64Image}" />`
